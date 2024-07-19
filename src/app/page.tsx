@@ -25,6 +25,7 @@ import UserSection from "@/components/UserSection";
 import { LogOut, PlusCircle } from "lucide-react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import { formatCurrency } from "@/lib/utils";
 
 export default function Home() {
   const [title, setTitle] = useState("");
@@ -107,6 +108,28 @@ export default function Home() {
             <CardHeader>
               <CardTitle>Expenses per user:</CardTitle>
             </CardHeader>
+            <CardContent>
+              <div className="flex gap-3">
+                <p className="font-bold">Randu:</p>
+                <p>{formatCurrency(150)}</p>
+              </div>
+              <div className="flex gap-3">
+                <p className="font-bold">Flores:</p>
+                <p>{formatCurrency(150)}</p>
+              </div>
+              <div className="flex gap-3">
+                <p className="font-bold">Total:</p>
+                <p>{formatCurrency(150)}</p>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="flex-1">
+            <CardHeader>
+              <CardTitle>Balance:</CardTitle>
+              <CardContent className="text-center">
+                <p>Randu</p>
+              </CardContent>
+            </CardHeader>
           </Card>
           <Card className="flex-1">
             <CardHeader>
@@ -125,6 +148,47 @@ export default function Home() {
             <Button className="bg-primary py-8 w-full h-full">
               <PlusCircle className="text-white w-5 h-5 mr-3" />
               Create Expense
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Edit profile</DialogTitle>
+              <DialogDescription>
+                Make changes to your profile here. Click save when you're done.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="name" className="text-right">
+                  Name
+                </Label>
+                <Input
+                  id="name"
+                  defaultValue="Pedro Duarte"
+                  className="col-span-3"
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="username" className="text-right">
+                  Username
+                </Label>
+                <Input
+                  id="username"
+                  defaultValue="@peduarte"
+                  className="col-span-3"
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button type="submit">Save changes</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button className="bg-primary py-8 w-full h-full">
+              <PlusCircle className="text-white w-5 h-5 mr-3" />
+              Create Category
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">

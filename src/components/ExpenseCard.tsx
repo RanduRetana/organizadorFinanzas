@@ -42,7 +42,7 @@ const ExpenseCard = ({
   category,
 }: ExpenseCardProps) => {
   return (
-    <Card className="mb-4 last:mb-0 sm:w-[49%]">
+    <Card className="mb-2 last:mb-0 sm:w-[49%]">
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>{title}</CardTitle>
         <div className="flex gap-2 items-center">

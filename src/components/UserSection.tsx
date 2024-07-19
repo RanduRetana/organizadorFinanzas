@@ -45,7 +45,7 @@ const UserSection = ({ user }: UserSectionProps) => {
           </SelectContent>
         </Select>
       </CardHeader>
-      <CardContent className="px-6">
+      <CardContent className="px-6 flex justify-between gap-2 flex-wrap">
         <ExpenseCard {...expense} />
         <ExpenseCard {...expense} />
         <ExpenseCard {...expense} />

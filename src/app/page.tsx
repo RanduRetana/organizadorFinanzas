@@ -145,42 +145,96 @@ export default function Home() {
         </Button>
         <Dialog>
           <DialogTrigger asChild>
-            <Button className="bg-primary py-8 w-full h-full">
-              <PlusCircle className="text-white w-5 h-5 mr-3" />
+            <Button className="bg-primary py-8 w-full my-2">
+              <PlusCircle className="text-white mr-3" />
               Create Expense
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
-              <DialogTitle>Edit profile</DialogTitle>
+              <DialogTitle>Create Expense</DialogTitle>
               <DialogDescription>
-                Make changes to your profile here. Click save when you're done.
+                Fill in the details to add a new expense.
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="name" className="text-right">
-                  Name
+                <Label htmlFor="title" className="text-right">
+                  Title
                 </Label>
                 <Input
-                  id="name"
-                  defaultValue="Pedro Duarte"
+                  id="title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
                   className="col-span-3"
                 />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="username" className="text-right">
-                  Username
+                <Label htmlFor="amount" className="text-right">
+                  Amount
                 </Label>
                 <Input
-                  id="username"
-                  defaultValue="@peduarte"
+                  id="amount"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  className="col-span-3"
+                  type="number"
+                  step="0.01"
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="description" className="text-right">
+                  Description
+                </Label>
+                <Input
+                  id="description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
                   className="col-span-3"
                 />
               </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="user" className="text-right">
+                  User
+                </Label>
+                <Select onValueChange={(value) => setUserId(value)}>
+                  <SelectTrigger className="col-span-3">
+                    <SelectValue placeholder="Select a user" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {users.map((user) => (
+                      <SelectItem key={user.id} value={user.id.toString()}>
+                        {user.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="category" className="text-right">
+                  Category
+                </Label>
+                <Select onValueChange={(value) => setCategoryId(value)}>
+                  <SelectTrigger className="col-span-3">
+                    <SelectValue placeholder="Select a category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories.map((category) => (
+                      <SelectItem
+                        key={category.id}
+                        value={category.id.toString()}
+                      >
+                        {category.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
             <DialogFooter>
-              <Button type="submit">Save changes</Button>
+              <Button className="w-full" type="submit" onClick={handleSubmit}>
+                Save Expense
+              </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>

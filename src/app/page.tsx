@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -11,16 +11,33 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import UserSection from "@/components/UserSection";
+import { PlusCircle } from "lucide-react";
 
 export default function Home() {
   return (
     <main className="p-4 flex flex-col h-screen">
       <Card className="bg-primary">
-        <CardTitle className="text-white p-4">Expenses</CardTitle>
+        <CardHeader>
+          <CardTitle className="text-white">Expenses</CardTitle>
+        </CardHeader>
+        <CardContent className="flex gap-3">
+          <Card className="flex-1">
+            <CardHeader>
+              <CardTitle>Expenses per user:</CardTitle>
+            </CardHeader>
+          </Card>
+          <Card className="flex-1">
+            <CardHeader>
+              <CardTitle>Balance:</CardTitle>
+            </CardHeader>
+          </Card>
+        </CardContent>
       </Card>
       <Dialog>
         <DialogTrigger asChild>
-          <Button className="bg-primary h-14 w-full my-2">
+          <Button className="bg-primary py-8 w-full my-2">
+            <PlusCircle className="text-white mr-3" />
             Create Expense
           </Button>
         </DialogTrigger>
@@ -59,12 +76,8 @@ export default function Home() {
         </DialogContent>
       </Dialog>
       <section className="flex flex-auto gap-2 w-full">
-        <Card className="bg-primary flex-1 h-full">
-          <CardTitle className="text-white p-4">Randu</CardTitle>
-        </Card>
-        <Card className="bg-primary flex-1 h-full">
-          <CardTitle className="text-white p-4">Flores</CardTitle>
-        </Card>
+        <UserSection user="Randu" />
+        <UserSection user="Flores" />
       </section>
     </main>
   );

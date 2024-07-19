@@ -18,7 +18,7 @@ export default function Home() {
   return (
     <main className="p-4 flex flex-col h-screen">
       <Card className="bg-primary">
-        <CardHeader>
+        <CardHeader className="px-6">
           <CardTitle className="text-white">Expenses</CardTitle>
         </CardHeader>
         <CardContent className="flex gap-3">
@@ -75,7 +75,7 @@ export default function Home() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      <section className="flex flex-auto gap-2 w-full">
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full">
         <UserSection user="Randu" />
         <UserSection user="Flores" />
       </section>

@@ -45,7 +45,7 @@ const ExpenseCard = ({
     <Card className="mb-4 last:mb-0 sm:w-[49%]">
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>{title}</CardTitle>
-        <div className="flex items-center">
+        <div className="flex gap-2 items-center">
           <p className="font-bold">{formatCurrency(amount)}</p>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

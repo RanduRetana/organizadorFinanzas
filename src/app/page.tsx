@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -26,6 +27,10 @@ import { LogOut, PlusCircle } from "lucide-react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { formatCurrency } from "@/lib/utils";
+import { HexColorPicker } from "react-colorful";
+import { ToastAction } from "@/components/ui/toast"
+import { useToast } from "@/components/ui/use-toast"
+import { Toaster } from "@/components/ui/toaster";
 
 export default function Home() {
   const [title, setTitle] = useState("");
@@ -33,8 +38,13 @@ export default function Home() {
   const [description, setDescription] = useState("");
   const [userId, setUserId] = useState("");
   const [categoryId, setCategoryId] = useState("");
+  const [categoryName, setCategoryName] = useState("");
+  const [color, setColor] = useState("#000000");
   const [users, setUsers] = useState<User[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [isExpenseDialogOpen, setIsExpenseDialogOpen] = useState(false);
+  const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false);
+  const { toast } = useToast()
 
   const fetchUsers = async () => {
     try {
@@ -58,7 +68,7 @@ export default function Home() {
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmitExpenses = async () => {
     try {
       const response = await fetch("/api/expenses", {
         method: "POST",
@@ -76,9 +86,44 @@ export default function Home() {
 
       if (response.ok) {
         console.log("Expense created successfully");
+        setIsExpenseDialogOpen(false); 
+        toast({
+          title: "Expense created successfully",
+          description: "Friday, February 10, 2023 at 5:57 PM",
+        })
       } else {
         const errorData = await response.json();
         console.error("Error creating expense:", errorData);
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  };
+
+  const handleSubmitCategory = async () => {
+    try {
+      const response = await fetch("/api/categories", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: categoryName,
+          color,
+        }),
+      });
+
+      if (response.ok) {
+        console.log("Category created successfully");
+        fetchCategories();
+        setIsCategoryDialogOpen(false);
+        toast({
+          title: "Category created successfully",
+          description: "Friday, February 10, 2023 at 5:57 PM",
+        })
+      } else {
+        const errorData = await response.json();
+        console.error("Error creating category:", errorData);
       }
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -99,6 +144,7 @@ export default function Home() {
 
   return (
     <main className="p-4 flex gap-2 flex-col h-screen">
+      <Toaster />
       <Card className="bg-primary">
         <CardHeader className="px-6">
           <CardTitle className="text-white">Expenses</CardTitle>
@@ -143,9 +189,9 @@ export default function Home() {
           <LogOut className="w-5 h-5 mr-3" />
           Logout
         </Button>
-        <Dialog>
+        <Dialog open={isExpenseDialogOpen} onOpenChange={setIsExpenseDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="bg-primary py-8 w-full my-2">
+            <Button className="bg-primary py-8 w-full my-2" onClick={() => setIsExpenseDialogOpen(true)}>
               <PlusCircle className="text-white mr-3" />
               Create Expense
             </Button>
@@ -232,24 +278,24 @@ export default function Home() {
               </div>
             </div>
             <DialogFooter>
-              <Button className="w-full" type="submit" onClick={handleSubmit}>
+              <Button className="w-full" type="submit" onClick={handleSubmitExpenses}>
                 Save Expense
               </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
-        <Dialog>
+        <Dialog open={isCategoryDialogOpen} onOpenChange={setIsCategoryDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="bg-primary py-8 w-full h-full">
+            <Button className="bg-primary py-8 w-full h-full" onClick={() => setIsCategoryDialogOpen(true)}>
               <PlusCircle className="text-white w-5 h-5 mr-3" />
               Create Category
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
-              <DialogTitle>Edit profile</DialogTitle>
+              <DialogTitle>Create Category</DialogTitle>
               <DialogDescription>
-                Make changes to your profile here. Click save when you're done.
+                Fill in the details to add a new category.
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
@@ -259,23 +305,25 @@ export default function Home() {
                 </Label>
                 <Input
                   id="name"
-                  defaultValue="Pedro Duarte"
+                  defaultValue="Entretenimiento"
                   className="col-span-3"
+                  onChange={(e) => setCategoryName(e.target.value)}
                 />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="username" className="text-right">
-                  Username
+                  Color
                 </Label>
-                <Input
-                  id="username"
-                  defaultValue="@peduarte"
-                  className="col-span-3"
-                />
+                <div className="col-span-3">
+                  <HexColorPicker
+                    color={color}
+                    onChange={setColor}
+                  />
+                </div>
               </div>
             </div>
             <DialogFooter>
-              <Button type="submit">Save changes</Button>
+              <Button type="submit" onClick={handleSubmitCategory}>Create</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>

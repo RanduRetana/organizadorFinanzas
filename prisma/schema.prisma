@@ -20,6 +20,7 @@ model User {
 model Category {
   id        Int       @id @default(autoincrement())
   name      String    @unique
+  color     String    @default("#000000")
   expenses  Expense[]
 }
 

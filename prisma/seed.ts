@@ -18,17 +18,20 @@ async function main() {
   }
 
   // Create categories
-  const categories = ['Groceries', 'Entertainment'];
+  const categories = [
+    { name: 'Food', color: '#FF0000' },
+    { name: 'Rent', color: '#00FF00' },
+    { name: 'Entertainment', color: '#0000FF' },
+  ];
 
-  for (const categoryName of categories) {
-    await prisma.category.upsert({
-      where: { name: categoryName },
-      update: {},
-      create: { name: categoryName },
-    });
-  }
+    for (const category of categories) {
+        await prisma.category.upsert({
+        where: { name: category.name },
+        update: {},
+        create: category,
+        });
+    }
 
-  console.log('Seed data created successfully');
 }
 
 main()
@@ -39,3 +42,4 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
+
